@@ -56,6 +56,18 @@ typings/
 
 # dotenv environment variables file
 .env
-
+.env_server
 # next.js build output
 .next
+# test Files
+gm_categories.sql
+gm_bookmarks.sql
+CURL Tests.txt
+bookmarks.sql
+
+# Docker
+Dockerfile
+.dockerignore
+
+# VS Code
+BOOKMARKS.code-workspace
