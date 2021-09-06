@@ -3,6 +3,12 @@ const path = require("path");
 // const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const cors = require("cors");
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 
 const indexRouter = require("./routes/index");
 const bookmarksRouter = require("./routes/bookmarks");
@@ -10,10 +16,11 @@ const bookmarksRouter = require("./routes/bookmarks");
 
 const app = express();
 // app.use(helmet());
+// CORS
+app.use(cors(corsOptions));
 
 app.use(logger("dev"));
 app.use(express.json());
-// app.use(cors({ origin: "http://localhost" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));

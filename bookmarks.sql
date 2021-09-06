@@ -1,12 +1,4 @@
 DROP TABLE IF EXISTS `gm_bookmarks`;
-
-
-
-
-
-
-
-
 CREATE TABLE `gm_bookmarks` ( `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT , 
  `category` VARCHAR(32) NOT NULL , 
  `generalIcon` VARCHAR(32) NOT NULL , 
