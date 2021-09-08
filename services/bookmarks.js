@@ -6,10 +6,6 @@ const config = require("../config");
 
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
-  // console.log("Entering getMultiple");
-  // console.log("====================");
-  // console.log("offset" + offset);
-  // console.log("list per page" + config.listPerPage);
   const rows = await db.query(
     `SELECT id, category, generalIcon, generalURL, bookmarkState, bookmark, bookmarkURL, author, bookmarkColor, bookmarkPicture, bookmarkServer, serverData, extraData, created_at, updated_at FROM gm_bookmarks LIMIT ?,?`,
     [offset, config.listPerPage]
@@ -23,12 +19,24 @@ async function getMultiple(page = 1) {
   };
 }
 
+// SELECT 1 RECORD FROM DB
+
+async function getBookmark(id) {
+  const row = await db.query(
+    `SELECT id, category, generalIcon, generalURL,
+    bookmarkState, bookmark, bookmarkURL, author,
+    bookmarkColor, bookmarkPicture, bookmarkServer,
+    serverData, extraData, created_at, updated_at 
+    FROM gm_bookmarks WHERE id=?`,
+    [id]
+  );
+  return { row };
+}
+
 // POST VALIDATION OF THE TO BE INTRODUCED DATA
 
 function validateCreate(bookmark) {
   let messages = [];
-
-  console.log(bookmark);
 
   if (!bookmark) {
     messages.push("No object is provided");
@@ -90,7 +98,52 @@ async function create(bookmark) {
   return { message };
 }
 
+async function update(id, bookmark) {
+  const result = await db.query(
+    "UPDATE gm_bookmarks SET category=?, generalIcon=?, generalURL=?, bookmarkState=?, bookmark=?, bookmarkURL=?, author=?, bookmarkColor=?, bookmarkPicture=?, bookmarkServer=?, serverData=?, extraData=?, created_at=?, updated_at=? WHERE id=?",
+    [
+      bookmark.category,
+      bookmark.generalIcon,
+      bookmark.generalURL,
+      bookmark.bookmarkState,
+      bookmark.bookmark,
+      bookmark.bookmarkURL,
+      bookmark.author,
+      bookmark.bookmarkColor,
+      bookmark.bookmarkPicture,
+      bookmark.bookmarkServer,
+      bookmark.serverData,
+      bookmark.extraData,
+      bookmark.created_at,
+      bookmark.updated_at,
+      id,
+    ]
+  );
+
+  let message = "Error in updating the bookmark";
+
+  if (result.affectedRows) {
+    message = "Bookmark updated successfully";
+  }
+
+  return { message };
+}
+
+async function remove(id) {
+  const result = await db.query("DELETE FROM gm_bookmarks WHERE id=?", [id]);
+
+  let message = "Error in deleting Bookmark";
+
+  if (result.affectedRows) {
+    message = "Bookmark deleted successfully";
+  }
+
+  return { message };
+}
 module.exports = {
   getMultiple,
+  getBookmark,
   create,
+  update,
+  remove,
 };
