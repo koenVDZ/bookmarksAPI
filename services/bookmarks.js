@@ -6,10 +6,12 @@ const config = require("../config");
 
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
+  // const rows = await db.query(
+  //   `SELECT id, category, generalIcon, generalURL, bookmarkState, bookmark, bookmarkURL, author, bookmarkColor, bookmarkPicture, bookmarkServer, serverData, extraData, created_at, updated_at FROM gm_bookmarks LIMIT ?,?`,
+  //   [offset, config.listPerPage]
+  // );
   const rows = await db.query(
-    `SELECT id, category, generalIcon, generalURL, bookmarkState, bookmark, bookmarkURL, author, bookmarkColor, bookmarkPicture, bookmarkServer, serverData, extraData, created_at, updated_at FROM gm_bookmarks LIMIT ?,?`,
-    [offset, config.listPerPage]
-  );
+    `SELECT id, category, generalIcon, generalURL, bookmarkState, bookmark, bookmarkURL, author, bookmarkColor, bookmarkPicture, bookmarkServer, serverData, extraData, created_at, updated_at FROM gm_bookmarks`);
   const data = helper.emptyOrRows(rows);
   const meta = { page };
 
